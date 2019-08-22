@@ -567,35 +567,6 @@ typedef void (*__cilk_abi_f32_t)(void *data, cilk32_t low, cilk32_t high);
 typedef void (*__cilk_abi_f64_t)(void *data, cilk64_t low, cilk64_t high);
 
 /**
- * @brief cilk_for implementation for 32-bit indexes.
- *
- * @param body The lambda function for the body of the cilk_for.  The lambda
- * function will be called to execute each grain of work.
- * @param data Data passed by the compiler into the lambda function.  Provides
- * access to data outside the cilk_for body.
- * @param count Number of steps in the loop.
- * @param grain This parameter allows the compiler to pass a value from a
- * \#pragam(grainsize) statement to allow the user to control the grainsize.  If
- * there isn't a \#pragma(grainsize) immediately preceeding cilk_for loop, Pass
- * 0 to specify that the runtime should calculate the grainsize using its own
- * hueristicts.
- */
-CILK_ABI_THROWS(void) __cilkrts_cilk_for_32(__cilk_abi_f32_t body,
-                                            void *data,
-                                            cilk32_t count,
-                                            int grain);
-
-/**
- * @brief cilk_for implementation for 64-bit indexes.
- *
- * @copydetails __cilkrts_cilk_for_32
- */
-CILK_ABI_THROWS(void) __cilkrts_cilk_for_64(__cilk_abi_f64_t body,
-                                            void *data,
-                                            cilk64_t count,
-                                            int grain);
-
-/**
  * @brief Allocate memory for variable length arrays. If the frame is
  * sync'd, the memory will be allocated on the stack, otherwise it will
  * be allocated from the heap.

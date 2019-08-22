@@ -109,31 +109,6 @@ endif()
 include(CheckCXXSourceCompiles)
 include(CheckCXXCompilerFlag)
 
-check_cxx_compiler_flag("-fcilkplus" CXX_SUPPORTS_CILKPLUS_FLAG)
-
-# Check for Cilk support
-if( CXX_SUPPORTS_CILKPLUS_FLAG )
-  set(CMAKE_REQUIRED_FLAGS "-fcilkplus -c")
-endif()
-CHECK_CXX_SOURCE_COMPILES("
-int fib(int n) {
-  if (n < 2) return n;
-  int x, y;
-  x = _Cilk_spawn fib(n - 1);
-  y = fib(n - 2);
-  _Cilk_sync;
-  return x + y;
-}
-
-int main() {
-  return fib(10);
-}" CXX_HAVE_CILK_SUPPORT)
-if( NOT CXX_HAVE_CILK_SUPPORT )
-  message(FATAL_ERROR "CXX compiler must support Cilk.")
-endif()
-if( CXX_SUPPORTS_CILKPLUS_FLAG )
-  set(CMAKE_REQUIRED_FLAGS "")
-endif()
 
 check_cxx_compiler_flag("--rtlib=compiler-rt" CXX_SUPPORTS_COMPILER_RT)
 check_cxx_compiler_flag("--rtlib=libgcc" CXX_SUPPORTS_LIBGCC)
@@ -146,7 +121,6 @@ check_cxx_compiler_flag("--rtlib=libgcc" CXX_SUPPORTS_LIBGCC)
 set(cilkrts_srcs
     runtime/bug.cpp
     runtime/cilk-abi.c
-    runtime/cilk-abi-cilk-for.cpp
     runtime/cilk-abi-vla-internal.c
     runtime/cilk_api.c
     runtime/cilk_fiber.cpp
